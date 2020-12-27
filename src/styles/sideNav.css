@@ -1,0 +1,48 @@
+.side-nav {
+  height: 100%;
+  width: 150px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: rgb(6, 0, 85);
+  overflow-x: hidden;
+  padding-top: 0px;
+}
+
+.side-nav span {
+  padding: 6px 6px 6px 32px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #818181;
+  display: block;
+}
+
+.side-nav span:hover {
+  color: #f1f1f1;
+  cursor: pointer;
+}
+
+.main {
+  margin-left: 150px; /* Same as the width of the sidenav */
+}
+
+@media screen and (max-height: 450px) {
+  .side-nav {
+    padding-top: 15px;
+  }
+  .side-nav span {
+    font-size: 18px;
+  }
+}
+
+.side-nav-header {
+  padding-top: 20px;
+  background-color: rgb(4, 0, 66);
+  height: 50px;
+}
+
+.side-nav-avatar {
+  width: 25%;
+  border-radius: 50%;
+}
