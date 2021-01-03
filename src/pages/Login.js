@@ -1,15 +1,20 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
+import {useSelector, useDispatch} from 'react-redux'
 
 import Input from '../components/Input'
+import {loggingIn} from '../actions'
 
 import '../styles/login.css'
 
 function Login() {
 
     const history = useHistory()
+    const dispatch = useDispatch()
+    const isLogged = useSelector(state => state.isLogged)
 
     function goToDashboard() {
+        dispatch(loggingIn())
         history.push("/dashboard")
     }
 

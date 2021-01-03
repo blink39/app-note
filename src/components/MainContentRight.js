@@ -8,7 +8,7 @@ function MainContentRight(props) {
         let tempTitle = ''
         let contentText = ''
 
-        Data.map(item => {
+        Data.forEach((item) => {
             if (item.id === 1) {
                 tempTitle = item.title
                 contentText = item.Content

@@ -6,7 +6,7 @@ function SideNav(props) {
 
     const dataComponents = Data.map(item => {
         return (
-            <span onClick={() => {props.sendDataToParent(item.id)}}>{item.text}</span>
+            <span key={item.id} onClick={() => {props.sendDataToParent(item.id)}}>{item.text}</span>
         )
     })
 

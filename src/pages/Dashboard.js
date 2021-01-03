@@ -1,14 +1,26 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import {useSelector, useDispatch} from 'react-redux'
 
 import SideNav from '../components/SideNav'
 import MainContent from '../components/MainContent'
+import {loggingOut} from '../actions'
 
 import '../styles/sideNav.css'
 
 function Dashboard() {
     
     const history = useHistory()
+    const dispatch = useDispatch()
+    const isLogged = useSelector(state => state.isLogged)
+    
+    const constructor = () => {
+        console.log(isLogged)
+        if (!isLogged) {
+            history.push("/login")
+        }
+    }
+    constructor()
     
     const [categoryId, setId] = useState(1);
 
@@ -17,6 +29,7 @@ function Dashboard() {
     };
 
     function goToLogin() {
+        dispatch(loggingOut())
         history.push("/login")
     }
     

@@ -14,18 +14,28 @@ function MainContent(props) {
         setTitleId(index);
     };
 
-    const headerTitle = SideNavdata.map(item => {
-        if (item.id === props.categoryId) {
-            return (
-                item.text
-            )
+    // const headerTitle = SideNavdata.map(item => {
+    //     if (item.id === props.categoryId) {
+    //         return (
+    //             item.text
+    //         )
+    //     }
+    // })
+
+    const headerTitle2 = () => {
+        let tempTitle = ""
+        for (let i = 0; i < SideNavdata.length; i++) {
+            if (SideNavdata[i]['id'] === props.categoryId) {
+                tempTitle = SideNavdata[i]['text']
+            }
         }
-    })
+        return tempTitle;
+    }
 
     return (
         <div>
             <div className="main-content-header">
-                <h3>{headerTitle}</h3>
+                <h3>{headerTitle2()}</h3>
             </div>
             <div className="main-content-body">
                 <div className="main-content-body-left">
