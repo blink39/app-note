@@ -14,8 +14,24 @@ function Login() {
     const isLogged = useSelector(state => state.isLogged)
 
     function goToDashboard() {
+        try {
+            let result = fetch('/auth/login', {
+                method: 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify({
+                    username: "username",
+                    password: "password"
+                })
+            })
+            console.log(result)
+        } catch(e) {
+            console.log(e)
+        }
+
         dispatch(loggingIn())
-        history.push("/dashboard")
+        // history.push("/dashboard")
     }
 
     return(
