@@ -15,7 +15,6 @@ function Dashboard() {
     const isLogged = useSelector(state => state.isLogged)
     
     const constructor = () => {
-        console.log(isLogged)
         if (!isLogged) {
             history.push("/login")
         }

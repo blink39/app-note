@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import Modal from './ModalInsert'
 import Data from '../data/noteData'
@@ -7,6 +7,14 @@ function MainContentLeft(props) {
     
     const[isShowAdd, setStateAdd] = useState(false)
     const[isShowEdit, setStateEdit] = useState(false)
+
+    useEffect(() => {
+        fetch("http://localhost:3001/notes")
+            .then(response => response.json())
+            .then(responseData => {
+                console.log(responseData)
+            })
+    });
 
     const titleComponents = Data.map(item => {
         if (item.categoryId === props.categoryId) {

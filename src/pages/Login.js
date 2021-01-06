@@ -13,25 +13,34 @@ function Login() {
     const dispatch = useDispatch()
     const isLogged = useSelector(state => state.isLogged)
 
-    function goToDashboard() {
+    async function goToDashboard() {
+        //https://www.javascripttutorial.net/javascript-fetch-api/#:~:text=The%20Fetch%20API%20allows%20you,resolve%20into%20the%20actual%20data
+        // learn promise async await
         try {
-            let result = fetch('/auth/login', {
+            let result = await fetch('http://localhost:3001/auth/login', {
                 method: 'POST',
                 headers : {
                     'Content-Type' : 'application/json'
                 },
                 body: JSON.stringify({
-                    username: "username",
-                    password: "password"
+                    username: 'test',
+                    password: 'password'
                 })
             })
-            console.log(result)
+
+            let user = await result.json()
+            
+            let d = new Date()
+            d.setTime(d.getTime() + (30*24*60*60*1000))
+            let expires = "expires="+ d.toUTCString()
+
+            document.cookie = "username=" + user.username + ";" + expires + ";path=/"
         } catch(e) {
             console.log(e)
         }
 
         dispatch(loggingIn())
-        // history.push("/dashboard")
+        history.push("/dashboard")
     }
 
     return(
