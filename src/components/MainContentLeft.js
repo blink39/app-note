@@ -8,12 +8,20 @@ function MainContentLeft(props) {
     const[isShowAdd, setStateAdd] = useState(false)
     const[isShowEdit, setStateEdit] = useState(false)
 
+    const bearer = 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0IiwiYWN0aXZlVGltZSI6MTYxMDg3NjMzNTUxNiwiaWF0IjoxNjEwODc2MzM1fQ.t_pSTx5soQhSY5jrWAvYzYxrCs5xU3pgYvhkoscQia8";
+
     useEffect(() => {
-        fetch("http://localhost:3001/notes")
-            .then(response => response.json())
-            .then(responseData => {
-                console.log(responseData)
-            })
+        fetch("http://localhost:3001/notes", {
+            method: 'GET',
+            headers: {
+                'Authorization': bearer,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            console.log(responseData)
+        })
     });
 
     const titleComponents = Data.map(item => {
@@ -44,6 +52,56 @@ function MainContentLeft(props) {
         setStateEdit(false)
     }
 
+    function addNote() {
+        fetch("http://localhost:3001/notes", {
+            method: 'POST',
+            headers: {
+                'Authorization': bearer,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: 'created by react',
+                content: 'testing 1'
+            })
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            console.log(responseData)
+        })
+    }
+    
+    function editNote() {
+        fetch("http://localhost:3001/notes/2", {
+            method: 'PUT',
+            headers: {
+                'Authorization': bearer,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: 'edited by react',
+                content: 'edited testing 1'
+            })
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            console.log(responseData)
+        })
+    }
+    
+    function deleteNote() {
+        fetch("http://localhost:3001/notes/2", {
+            method: 'DELETE',
+            headers: {
+                'Authorization': bearer,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            console.log(responseData)
+        })
+    }
+
     return (
         <div className="main-left">
             <div className="main-left-header">
@@ -62,6 +120,10 @@ function MainContentLeft(props) {
             <div className="main-left-body">
                 {titleComponents}
             </div>
+            
+            <button onClick={addNote}>Add</button>
+            <button onClick={editNote}>Edit</button>
+            <button onClick={deleteNote}>Delete</button>
         </div>
     )
 }

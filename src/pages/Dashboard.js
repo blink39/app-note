@@ -16,7 +16,7 @@ function Dashboard() {
     
     const constructor = () => {
         if (!isLogged) {
-            history.push("/login")
+            // history.push("/login")
         }
     }
     constructor()

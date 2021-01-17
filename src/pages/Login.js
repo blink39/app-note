@@ -27,8 +27,8 @@ function Login() {
                     password: 'password'
                 })
             })
-
             let user = await result.json()
+            console.log(await user)
             
             let d = new Date()
             d.setTime(d.getTime() + (30*24*60*60*1000))
