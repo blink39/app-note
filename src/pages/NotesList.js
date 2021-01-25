@@ -1,43 +1,75 @@
 import React, { useState, useEffect } from 'react'
+import {Link} from 'react-router-dom'
+import axios from 'axios'
 
+import NoteAdd from '../components/NoteAdd'
 import Notes from '../components/Notes'
 
 function NotesList() {
-    let notesData
-    const [state, setState] = useState()
-    const [loading, setLoading] = useState(false)
+
+    let notesList
+    const [notesData, setNotes] = useState()
+    const [loading, setLoading] = useState(true)
     const loginToken = localStorage.getItem("loginToken")
 
-    useEffect(() => {
-        if ( loginToken ) {
-            fetch("http://localhost:3001/notes", {
-                method: 'GET',
+    const sendGetRequest = async () => {
+        try {
+            const res = await axios({
+                method: "GET",
+                url: "http://localhost:3001/notes",
                 headers: {
                     'Authorization': 'Bearer ' + loginToken,
                     'Content-Type': 'application/json'
                 }
             })
-            .then(response => response.json())
-            .then(responseData => {
-                setState(responseData.data)
-                setLoading(true)
-            })
+            setLoading(false)
+            setNotes(res.data)
+        } catch (err) {
+            if ( err.response.data.errors ) {
+                let errMsg = ''
+                err.response.data.errors.map( errorItem => {
+                    errMsg += errorItem.message + '\n'
+                })
+                alert(errMsg)
+            }
         }
-    })
+    };
 
-    notesData = state.map( item => {
-        return (
-            <Notes key={item.id} data={item}/>
-        )
-    })
+    useEffect(() => {
+        if ( loginToken ) {
+            sendGetRequest()
+        }
+    }, [])
+
+    if (notesData) {
+        notesList = notesData.data.map(item => {
+            return (
+                <Link to={`/detail/${item.id}`} style={{textDecoration: 'none', color: 'black'}}>
+                    <Notes key={item.id} data={item} />
+                </Link>
+            )
+        })
+    }
 
     return ( loginToken
         ?
-            <div>
-                {notesData}
-            </div>
+            loading
+            ?
+                <div>
+                    <h1>Loading ...</h1>
+                </div>
+            :
+                <div>
+                    <NoteAdd/>
+                    {notesList}
+                    <Link to='/detail'>
+                        <button>Add</button>
+                    </Link>
+                </div>
         :
-            <h1>Please login first</h1>
+            <div>
+                <h1>Login First ...</h1>
+            </div>
     )
 }
 
