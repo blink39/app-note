@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 
 /** @jsx jsx */ /** @jsxRuntime classic */
 import { jsx, css, keyframes } from '@emotion/react'
@@ -29,6 +30,7 @@ function Notes(props) {
     `;
 
     const container = css`
+        transition: transform 0.3s;
         border-radius: 5px;
         border: 2px solid #f2f2f2;
         padding: 10px;
@@ -42,6 +44,14 @@ function Notes(props) {
         height: 210px;
         &:hover {
             box-shadow: 0px 1px 3px #888888;
+        }
+        @media (max-width: 800px) {
+            width: 45%;
+            height: 300px;
+        }
+        @media (max-width: 400px) {
+            width: 80%;
+            height: 300px;
         }
     `
 
@@ -83,6 +93,30 @@ function Notes(props) {
         setAnimate(false);
     };
 
+    const loginToken = localStorage.getItem("loginToken")
+
+    const deleteNote = async () => {
+        try {
+            const res = await axios({
+                method: "DELETE",
+                url: `${process.env.REACT_APP_URL_DEV}/notes/${props.data.id}`,
+                headers: {
+                    'Authorization': 'Bearer ' + loginToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            props.refresh(new Date())
+        } catch (err) {
+            if ( err.response.data.errors ) {
+                let errMsg = ''
+                err.response.data.errors.map( errorItem => {
+                    errMsg += errorItem.message + '\n'
+                })
+                alert(errMsg)
+            }
+        }
+    };
+
     return (
         <div css={container} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} >
             <div css={upper}>
@@ -91,8 +125,8 @@ function Notes(props) {
                 <span>{props.data.content}</span>
             </div>
             <div css={lower}>
-                <button css={button}>Edit note</button>
-                <button css={button}>Delete note</button>
+                <button css={button} onClick={props.handleEdit}>Edit note</button>
+                <button css={button} onClick={deleteNote}>Delete note</button>
             </div>
         </div>
     )

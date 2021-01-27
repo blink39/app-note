@@ -44,7 +44,7 @@ function NotesDetail({match}) {
         try {
             const res = await axios({
                 method: "GET",
-                url: `http://localhost:3001/notes/${match.params.id}`,
+                url: `${process.env.REACT_APP_URL_DEV}/notes/${match.params.id}`,
                 headers: {
                     'Authorization': 'Bearer ' + loginToken,
                     'Content-Type': 'application/json'

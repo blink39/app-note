@@ -17,15 +17,14 @@ function App() {
 
     return(
         <Router>
-              <Nav />
-                <div css={container}>
-                    <Switch>
-                        <Route path="/" exact component={Home}/>
-                        <Route path="/detail" exact component={NoteDetailPage}/>
-                        <Route path="/detail/:id" exact component={NoteDetailPage}/>
-                        <Route path="/login" exact component={LoginPage}/>
-                    </Switch>
-                </div>
+            <div css={container}>
+                <Switch>
+                    <Route path="/" exact component={Home}/>
+                    <Route path="/detail" exact component={NoteDetailPage}/>
+                    <Route path="/detail/:id" exact component={NoteDetailPage}/>
+                    <Route path="/login" exact component={LoginPage}/>
+                </Switch>
+            </div>
         </Router>
     )
 }

@@ -1,28 +1,37 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 /** @jsx jsx */ /** @jsxRuntime classic */
 import { jsx, css } from '@emotion/react'
 
-function NoteAdd(props) {
-    
-    const [display, setDisplay] = useState({
-        status: 'none',
-        height: 15
-    })
+function NoteEdit(props) {
 
     const container = css`
+        display: ${props.show ? 'block' : 'none'};
+        position: fixed;
+        z-index: 1;
+        padding-top: 45px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+    `
+
+    const form = css`
+        background-color: white;
         border-radius: 7px;
         border: 1px solid #f2f2f2;
         padding: 10px;
         box-shadow: 1px 5px 9px #888888;
-        width: 50%;
+        width: 40%;
         margin: 0 auto;
         margin-bottom: 25px;
     `
-
+    
     const inputContainer = css`
-        display: ${display.status};
         margin-bottom: 10px;
     `
 
@@ -43,12 +52,11 @@ function NoteAdd(props) {
             outline: none;
         }
         resize: none;
-        height: ${display.height}px;
+        height: 300px;
         width: 100%;
     `
     
     const buttonContainer = css`
-        display: ${display.status};
         text-align: right;
         font-family:'Roboto', sans-serif;
     `
@@ -63,31 +71,21 @@ function NoteAdd(props) {
             background-color: #f2f2f2;
         }
     `
-    
-    function showDisplay() {
-        setDisplay({
-            status : "block",
-            height: 100
-        })
-    }
-    
-    function hideDisplay() {
-        setState({
-            title : "",
-            content : ""
-        })
 
-        setDisplay({
-            status : "none",
-            height: 15
-        })
-    }
-    
     const [state , setState] = useState({
-        title : "",
-        content : ""
+        titleEdit : "",
+        contentEdit : ""
     })
-    
+
+    useEffect(() => {
+        if (props.data) {
+            setState({
+                titleEdit: props.data.title,
+                contentEdit: props.data.content
+            })
+        }
+    }, [props])
+
     const handleChange = (e) => {
         const {id , value} = e.target   
         setState(prevState => ({
@@ -98,22 +96,22 @@ function NoteAdd(props) {
 
     const loginToken = localStorage.getItem("loginToken")
 
-    const addNote = async () => {
+    const editNote = async () => {
         try {
             const res = await axios({
-                method: "POST",
-                url: `${process.env.REACT_APP_URL_DEV}/notes`,
+                method: "PUT",
+                url: `${process.env.REACT_APP_URL_DEV}/notes/${props.data.id}`,
                 headers: {
                     'Authorization': 'Bearer ' + loginToken,
                     'Content-Type': 'application/json'
                 },
                 data: {
-                    title : state.title,
-                    content : state.content
+                    title : state.titleEdit,
+                    content : state.contentEdit
                 }
             })
             props.refresh(new Date())
-            hideDisplay()
+            props.handleClose()
         } catch (err) {
             if ( err.response.data.errors ) {
                 let errMsg = ''
@@ -127,16 +125,18 @@ function NoteAdd(props) {
 
     return (
         <div css={container}>
-            <div css={inputContainer}>
-                <input css={input} type="text" id="title" value={state.title} onChange={handleChange} placeholder="Title" autoComplete="off" />
-            </div>
-            <textarea css={textarea} id="content" value={state.content} onChange={handleChange} placeholder="Make a note..." onClick={showDisplay}/>
-            <div css={buttonContainer}>
-                <button css={button} onClick={hideDisplay}>Close</button>
-                <button css={button} onClick={addNote}>Add Note</button>
+            <div css={form}>
+                <div css={inputContainer}>
+                    <input css={input} type="text" id="titleEdit" value={state.titleEdit} onChange={handleChange} placeholder="Title" autoComplete="off" />
+                </div>
+                <textarea css={textarea} id="contentEdit" value={state.contentEdit} onChange={handleChange} placeholder="Make a note..." />
+                <div css={buttonContainer}>
+                    <button css={button} onClick={props.handleClose}>Close</button>
+                    <button css={button} onClick={editNote}>Edit note</button>
+                </div>
             </div>
         </div>
     )
 }
 
-export default NoteAdd
+export default NoteEdit

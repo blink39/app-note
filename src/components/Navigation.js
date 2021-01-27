@@ -1,15 +1,11 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+/** @jsx jsx */ /** @jsxRuntime classic */
+import { jsx, css } from '@emotion/react'
 
 function Navigation() {
     return (
         <div>
-            <Link to='/'>
-            <button>Notes</button>
-            </Link>
-            <Link to='/login'>
-            <button>Login</button>
-            </Link>
+            <button>Logout</button>
         </div>
     )
 }
