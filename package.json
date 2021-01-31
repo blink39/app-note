@@ -1,5 +1,6 @@
 {
-  "name": "new-app-note",
+  "homepage": "http://blink39.github.io/app-note",
+  "name": "app-note",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
