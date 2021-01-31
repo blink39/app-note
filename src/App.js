@@ -1,5 +1,5 @@
 import React from 'react'
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Switch, Route, HashRouter} from 'react-router-dom'
 /** @jsx jsx */ /** @jsxRuntime classic */
 import { jsx, css } from '@emotion/react'
 
@@ -16,7 +16,7 @@ function App() {
     `
 
     return(
-        <Router>
+        <HashRouter>
             <div css={container}>
                 <Switch>
                     <Route path="/" exact component={Home}/>
@@ -25,7 +25,7 @@ function App() {
                     <Route path="/login" exact component={LoginPage}/>
                 </Switch>
             </div>
-        </Router>
+        </HashRouter>
     )
 }
 

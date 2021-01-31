@@ -73,7 +73,7 @@ function NotesList() {
         try {
             const res = await axios({
                 method: "GET",
-                url: `${process.env.REACT_APP_URL_DEV}/notes`,
+                url: `${process.env.REACT_APP_URL_DEV}/notes?q=`,
                 headers: {
                     'Authorization': 'Bearer ' + token,
                     'Content-Type': 'application/json'
